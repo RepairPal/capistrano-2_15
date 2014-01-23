@@ -79,7 +79,8 @@ module Capistrano
         return servers unless ENV['HOSTFILTER'] or ENV['HOSTROLEFILTER']
         if ENV['HOSTFILTER']
           filters = ENV['HOSTFILTER'].split(/,/)
-          servers.select { |server| filters.include?(server.host) }
+          # Change server.host to server.to_s to account for port
+          servers.select { |server| filters.include?(server.to_s) }
         elsif ENV['HOSTROLEFILTER']
           filters = ENV['HOSTROLEFILTER'].split(/,/).map do |role|
             local_roles = roles[role.to_sym]
